@@ -141,20 +141,21 @@ main { padding: 2rem; max-width: 1200px; margin: 0 auto; width: 100%; }
     padding: 1.5rem;
     border-radius: 0.75rem;
     border: 1px solid #334155;
-    height: 400px;
+    height: 450px;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 .card h3 { margin-top: 0; margin-bottom: 1rem; flex-shrink: 0; }
 
 .chart-container canvas { flex-grow: 1; min-height: 0; }
 
-.table-wrapper { 
+.table-responsive { 
     overflow-y: auto; 
     flex-grow: 1;
     scrollbar-width: thin;
-    scrollbar-color: #334155 transparent;
+    scrollbar-color: #475569 transparent;
 }
 table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
 th, td { text-align: left; padding: 0.75rem; border-bottom: 1px solid #334155; }
@@ -168,24 +169,30 @@ th { color: #94a3b8; font-weight: 600; }
 }
 
 @media (max-width: 768px) {
-    .stats-container {
+    .stats-grid {
         grid-template-columns: 1fr;
     }
 
-    .navbar {
+    nav {
         flex-direction: column;
         gap: 1rem;
         padding: 1rem;
+        text-align: center;
     }
 
-    .dashboard-header {
+    .stats-header {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
         gap: 1rem;
+        text-align: center;
     }
 
     #add-record-btn {
         width: 100%;
+    }
+
+    .content-grid {
+        grid-template-columns: 1fr;
     }
 
     .table-responsive {
@@ -200,15 +207,15 @@ th { color: #94a3b8; font-weight: 600; }
 }
 
 @media (max-width: 480px) {
-    h1 {
-        font-size: 1.5rem;
+    h1, h2 {
+        font-size: 1.25rem;
     }
 
     .card {
         padding: 1rem;
     }
 
-    .stat-amount {
+    .stat-card p {
         font-size: 1.5rem;
     }
 }
