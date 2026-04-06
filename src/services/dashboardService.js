@@ -68,7 +68,7 @@ const getDashboardStats = async (user, query) => {
 
   // 4. Recent Transactions
   const recTransQuery = { isDeleted: false };
-  if (user.role === "Viewer") {
+  if (user.role !== "Admin") {
     recTransQuery.userId = user._id;
   }
   const recentTransactions = await Record.find(recTransQuery)

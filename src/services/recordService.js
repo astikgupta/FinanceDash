@@ -16,11 +16,7 @@ const getRecords = async (user, query) => {
     search,
   } = query;
 
-  // RBAC: Admins see all,  // RBAC: Admins see all analytics, others only see their own
-  const dateFilter = { isDeleted: false };
-  if (user.role !== "Admin") {
-    dateFilter.userId = new mongoose.Types.ObjectId(user._id);
-  }
+  // RBAC: Admins see all, others only see their own records
   const filters = { isDeleted: false };
   if (user.role !== "Admin") {
     filters.userId = user._id;
@@ -40,15 +36,6 @@ const getRecords = async (user, query) => {
       { notes: { $regex: search, $options: "i" } },
     ];
   }
-
-  // 4. Recent Transactions
-  const recTransQuery = { isDeleted: false };
-  if (user.role !== "Admin") {
-    recTransQuery.userId = user._id;
-  }
-  const recentTransactions = await Record.find(recTransQuery)
-    .sort({ date: -1 })
-    .limit(10);
 
   const skip = (page - 1) * limit;
 
