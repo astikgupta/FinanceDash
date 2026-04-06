@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Dashboard - Showcase</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="dark-mode">
+    <div id="login-screen" class="screen">
+        <div class="auth-card">
+            <div id="login-form-wrapper">
+                <h1>Finance API Login</h1>
+                <p>Use seeded credentials (admin@example.com / password123)</p>
+                <form id="login-form">
+                    <input type="email" id="email" placeholder="Email" required value="admin@example.com">
+                    <input type="password" id="password" placeholder="Password" required value="password123">
+                    <button type="submit">Login to Dashboard</button>
+                </form>
+                <p class="toggle-text">Don't have an account? <a href="#" id="to-register">Register here</a></p>
+            </div>
+
+            <div id="register-form-wrapper" class="hidden">
+                <h1>Create Account</h1>
+                <p>Sign up to start tracking your finances</p>
+                <form id="register-form">
+                    <input type="text" id="reg-name" placeholder="Full Name" required>
+                    <input type="email" id="reg-email" placeholder="Email" required>
+                    <input type="password" id="reg-password" placeholder="Password (min 6 chars)" required>
+                    <select id="reg-role">
+                        <option value="Analyst">Analyst (Edit access)</option>
+                        <option value="Viewer">Viewer (Read access)</option>
+                    </select>
+                    <button type="submit">Create Account</button>
+                </form>
+                <p class="toggle-text">Already have an account? <a href="#" id="to-login">Login here</a></p>
+            </div>
+            <div id="login-error" class="error"></div>
+        </div>
+    </div>
+
+    <div id="dashboard-screen" class="screen hidden">
+        <nav>
+            <div class="logo">Finance<span>Dash</span></div>
+            <div class="user-info">
+                <span id="user-name">Admin</span>
+                <button id="logout-btn">Logout</button>
+            </div>
+        </nav>
+
+        <main>
+            <div class="stats-header">
+                <h2>Overview</h2>
+                <button id="add-record-btn">+ Add Record</button>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Income</h3>
+                    <p id="total-income">$0.00</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Expenses</h3>
+                    <p id="total-expenses" class="expense">$0.00</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Net Balance</h3>
+                    <p id="net-balance">$0.00</p>
+                </div>
+            </div>
+
+            <div class="content-grid">
+                <div class="chart-container card">
+                    <h3>Monthly Trends</h3>
+                    <canvas id="trendsChart"></canvas>
+                </div>
+                <div class="recent-activity card">
+                    <h3>Recent Transactions</h3>
+                    <div class="table-wrapper">
+                        <table id="recent-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Category</th>
+                                    <th>Type</th>
+                                    <th>Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Data will be injected here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Record Modal -->
+    <div id="modal-container" class="modal-overlay hidden">
+        <div class="modal card">
+            <h3>Add New Record</h3>
+            <form id="record-form">
+                <div class="form-group">
+                    <label>Amount ($)</label>
+                    <input type="number" id="record-amount" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label>Type</label>
+                    <select id="record-type" required>
+                        <option value="expense">Expense</option>
+                        <option value="income">Income</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <input type="text" id="record-category" placeholder="e.g., Food, Salary..." required>
+                </div>
+                <div class="form-group">
+                    <label>Notes</label>
+                    <input type="text" id="record-notes" placeholder="Optional notes">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" id="cancel-modal" class="btn-secondary">Cancel</button>
+                    <button type="submit" class="btn-primary">Save Record</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
