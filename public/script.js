@@ -257,12 +257,20 @@ async function showDashboard() {
     document.getElementById("dashboard-screen").classList.remove("hidden");
     document.getElementById("user-name").textContent = `${localStorage.getItem("userName")} (${role})`;
 
-    // Handle Admin-only UI
+    // Handle Admin-only UI (Users, Deletion)
     const adminElements = document.querySelectorAll(".admin-only");
     if (role === "Admin") {
         adminElements.forEach(el => el.classList.remove("hidden"));
     } else {
         adminElements.forEach(el => el.classList.add("hidden"));
+    }
+
+    // Handle Creator UI (Add Record)
+    const creatorElements = document.querySelectorAll(".creator-only");
+    if (role === "Admin" || role === "Analyst") {
+        creatorElements.forEach(el => el.classList.remove("hidden"));
+    } else {
+        creatorElements.forEach(el => el.classList.add("hidden"));
     }
 
     await fetchStats();
@@ -320,7 +328,7 @@ function updateUI(data) {
         tableBody.innerHTML = "";
         
         recentTransactions.forEach(tx => {
-            const actionCell = role === "Admin" 
+            const actionCell = (role === "Admin" || role === "Analyst")
                 ? `<td><button class="delete-btn" onclick="handleDeleteRecord('${tx._id}')">🗑️</button></td>` 
                 : ""; 
 

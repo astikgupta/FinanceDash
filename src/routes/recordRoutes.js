@@ -55,7 +55,7 @@ router.get("/", authorize("Analyst", "Admin"), getRecords);
  *       201:
  *         description: Record created successfully
  */
-router.post("/", authorize("Admin"), createRecord);
+router.post("/", authorize("Admin", "Analyst"), createRecord);
 
 router.patch("/:id", authorize("Admin"), updateRecord);
 
@@ -75,6 +75,6 @@ router.patch("/:id", authorize("Admin"), updateRecord);
  *       200:
  *         description: Record deleted successfully
  */
-router.delete("/:id", authorize("Admin"), deleteRecord);
+router.delete("/:id", authorize("Admin", "Analyst"), deleteRecord);
 
 module.exports = router;
