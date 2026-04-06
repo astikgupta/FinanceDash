@@ -4,8 +4,11 @@ const mongoose = require("mongoose");
 const getDashboardStats = async (user, query) => {
   const { startDate, endDate } = query;
 
-  // Showcase Dashboard: Everyone sees all analytics
+  // RBAC: Admins see all analytics, others only see their own
   const dateFilter = { isDeleted: false };
+  if (user.role !== "Admin") {
+    dateFilter.userId = new mongoose.Types.ObjectId(user._id);
+  }
 
   if (startDate || endDate) {
     dateFilter.date = {};

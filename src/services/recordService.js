@@ -16,8 +16,15 @@ const getRecords = async (user, query) => {
     search,
   } = query;
 
-  // Showcase Dashboard: Everyone sees all records (Analyst/Admin/Viewer)
+  // RBAC: Admins see all,  // RBAC: Admins see all analytics, others only see their own
+  const dateFilter = { isDeleted: false };
+  if (user.role !== "Admin") {
+    dateFilter.userId = new mongoose.Types.ObjectId(user._id);
+  }
   const filters = { isDeleted: false };
+  if (user.role !== "Admin") {
+    filters.userId = user._id;
+  }
 
   if (type) filters.type = type;
   if (category) filters.category = category;
@@ -33,6 +40,15 @@ const getRecords = async (user, query) => {
       { notes: { $regex: search, $options: "i" } },
     ];
   }
+
+  // 4. Recent Transactions
+  const recTransQuery = { isDeleted: false };
+  if (user.role !== "Admin") {
+    recTransQuery.userId = user._id;
+  }
+  const recentTransactions = await Record.find(recTransQuery)
+    .sort({ date: -1 })
+    .limit(10);
 
   const skip = (page - 1) * limit;
 
