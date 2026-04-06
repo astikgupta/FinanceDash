@@ -18,6 +18,6 @@ router.use(verifyJWT);
  *       200:
  *         description: Dashboard stats successfully fetched
  */
-router.get("/", authorize("Analyst", "Admin"), getStats);
+router.get("/", authorize("Viewer", "Analyst", "Admin"), getStats);
 
 module.exports = router;

@@ -6,9 +6,7 @@ const getDashboardStats = async (user, query) => {
 
   // RBAC: Admins see all analytics, others only see their own
   const dateFilter = { isDeleted: false };
-  if (user.role !== "Admin") {
-    dateFilter.userId = new mongoose.Types.ObjectId(user._id);
-  }
+  // Analyst and Viewer see global financial summaries for dashboard visualization
 
   if (startDate || endDate) {
     dateFilter.date = {};
@@ -69,9 +67,7 @@ const getDashboardStats = async (user, query) => {
   // 4. Recent Transactions (with filters)
   const { type, search } = query;
   const recTransQuery = { isDeleted: false };
-  if (user.role !== "Admin") {
-    recTransQuery.userId = user._id;
-  }
+  // Global summary for dashboard overview
   
   if (type) recTransQuery.type = type;
   if (search) {

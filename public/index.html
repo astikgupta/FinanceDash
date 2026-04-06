@@ -42,76 +42,130 @@
     </div>
 
     <div id="dashboard-screen" class="screen hidden">
-        <nav>
+        <header>
             <div class="logo">Finance<span>Dash</span></div>
+            <nav class="main-nav">
+                <button id="show-dash-btn" class="active">📊 Dashboard</button>
+                <button id="show-users-btn" class="admin-only hidden">👥 Manage Users</button>
+            </nav>
             <div class="user-info">
-                <span id="user-name">Admin</span>
-                <button id="logout-btn">Logout</button>
+                <div class="profile-pill">
+                    <span class="avatar-icon">👤</span>
+                    <span id="user-name">Admin</span>
+                </div>
+                <button id="logout-btn" class="logout-icon-btn" title="Logout">🚪 Exit</button>
             </div>
-        </nav>
+        </header>
 
         <main>
-            <div class="stats-header">
-                <h2>Overview</h2>
-                <button id="add-record-btn">+ Add Record</button>
-            </div>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <h3>Total Income</h3>
-                    <p id="total-income">$0.00</p>
-                </div>
-                <div class="stat-card">
-                    <h3>Total Expenses</h3>
-                    <p id="total-expenses" class="expense">$0.00</p>
-                </div>
-                <div class="stat-card">
-                    <h3>Net Balance</h3>
-                    <p id="net-balance">$0.00</p>
-                </div>
-            </div>
-
-            <div class="content-grid">
-                <div class="chart-container card">
-                    <h3>Monthly Trends</h3>
-                    <canvas id="trendsChart"></canvas>
-                </div>
-                <div class="recent-activity card">
-                        <div class="card-header">
-                            <h3>Recent Transactions</h3>
-                            <button id="toggle-filters" class="btn-secondary btn-sm">🔍 Filters</button>
-                        </div>
-                        
-                        <div id="filter-wrapper" class="filter-wrapper hidden-mobile">
-                            <div class="filter-bar">
-                                <input type="text" id="filter-search" placeholder="Search...">
-                                <select id="filter-type">
-                                    <option value="">All Types</option>
-                                    <option value="income">Income</option>
-                                    <option value="expense">Expense</option>
-                                </select>
-                                <input type="date" id="filter-start" title="Start Date">
-                                <input type="date" id="filter-end" title="End Date">
-                            </div>
-                        </div>
-                        <div class="table-responsive">
-                            <table id="recent-table">
-                                <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Category</th>
-                                        <th>Type</th>
-                                        <th>Amount</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- Dynamic Rows -->
-                                </tbody>
-                            </table>
+            <!-- Dashboard View -->
+            <section id="dashboard-view">
+                <!-- Dashboard Grid -->
+                <div class="dashboard-grid">
+                    <div class="card stat-card income">
+                        <span class="icon">💰</span>
+                        <div class="stat-info">
+                            <p>Total Income</p>
+                            <h2 id="total-income">$0.00</h2>
                         </div>
                     </div>
-                </section>
-            </main>
+                    <div class="card stat-card expense">
+                        <span class="icon">💸</span>
+                        <div class="stat-info">
+                            <p>Total Expenses</p>
+                            <h2 id="total-expenses">$0.00</h2>
+                        </div>
+                    </div>
+                    <div class="card stat-card balance">
+                        <span class="icon">🏦</span>
+                        <div class="stat-info">
+                            <p>Net Balance</p>
+                            <h2 id="net-balance">$0.00</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="charts-wrapper">
+                    <div class="charts-section card">
+                        <h3>Financial Trends</h3>
+                        <div class="chart-container">
+                            <canvas id="trendsChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="charts-section card">
+                        <h3>Category Breakdown</h3>
+                        <div class="chart-container doughnut-container">
+                            <canvas id="categoryChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recent-activity card">
+                    <div class="card-header">
+                        <h3>Recent Transactions</h3>
+                        <div class="header-actions">
+                            <button id="toggle-filters" class="btn-filter mobile-only">🔍 Filter</button>
+                            <button id="add-record-btn" class="btn-primary admin-only hidden">➕ Add Record</button>
+                        </div>
+                    </div>
+                    <div id="filter-wrapper" class="filter-wrapper">
+                        <div class="filter-bar">
+                            <input type="text" id="filter-search" placeholder="Search...">
+                            <select id="filter-type">
+                                <option value="">All Types</option>
+                                <option value="income">Income</option>
+                                <option value="expense">Expense</option>
+                            </select>
+                            <input type="date" id="filter-start" title="Start Date">
+                            <input type="date" id="filter-end" title="End Date">
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="recent-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Category</th>
+                                    <th>Type</th>
+                                    <th>Amount</th>
+                                    <th class="admin-only hidden">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dynamic Rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- User Management Screen -->
+            <section id="user-management-screen" class="hidden">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>User Management</h3>
+                        <p>Manage user roles and activation status</p>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="user-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dynamic Content -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
     </div>
 
     <!-- Add Record Modal -->

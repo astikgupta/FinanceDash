@@ -30,7 +30,7 @@ router.use(verifyJWT);
  *       200:
  *         description: List of records
  */
-router.get("/", authorize("Viewer", "Analyst", "Admin"), getRecords);
+router.get("/", authorize("Analyst", "Admin"), getRecords);
 
 /**
  * @swagger
@@ -55,9 +55,9 @@ router.get("/", authorize("Viewer", "Analyst", "Admin"), getRecords);
  *       201:
  *         description: Record created successfully
  */
-router.post("/", authorize("Analyst", "Admin"), createRecord);
+router.post("/", authorize("Admin"), createRecord);
 
-router.patch("/:id", authorize("Analyst", "Admin"), updateRecord);
+router.patch("/:id", authorize("Admin"), updateRecord);
 
 /**
  * @swagger

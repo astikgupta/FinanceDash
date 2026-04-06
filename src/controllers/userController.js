@@ -1,31 +1,45 @@
-const userService = require("../services/userService");
+const User = require("../models/User");
 const ApiResponse = require("../utils/ApiResponse");
 const catchAsync = require("../utils/catchAsync");
 const ApiError = require("../utils/ApiError");
 
-const getUsers = catchAsync(async (req, res) => {
-  const usersData = await userService.getAllUsers(req.query);
+const getAllUsers = catchAsync(async (req, res) => {
+  const users = await User.find({ isDeleted: false }).select("-password");
 
   return res
     .status(200)
-    .json(new ApiResponse(200, usersData, "Users fetched successfully"));
+    .json(new ApiResponse(200, users, "Users fetched successfully"));
 });
 
-const updateUserStatus = catchAsync(async (req, res) => {
-  const { status } = req.body;
-  if (!status) {
-    throw new ApiError(400, "Status is required");
+const updateUser = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const { role, status } = req.body;
+
+  const user = await User.findById(id);
+  if (!user) {
+    throw new ApiError(404, "User not found");
   }
 
-  const user = await userService.updateUserStatus(req.params.id, status);
+  if (role) user.role = role;
+  if (status) user.status = status;
+
+  await user.save();
 
   return res
     .status(200)
-    .json(new ApiResponse(200, user, "User status updated successfully"));
+    .json(new ApiResponse(200, user, "User updated successfully"));
 });
 
 const deleteUser = catchAsync(async (req, res) => {
-  await userService.softDeleteUser(req.params.id);
+  const { id } = req.params;
+
+  const user = await User.findById(id);
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+
+  user.isDeleted = true;
+  await user.save();
 
   return res
     .status(200)
@@ -33,7 +47,7 @@ const deleteUser = catchAsync(async (req, res) => {
 });
 
 module.exports = {
-  getUsers,
-  updateUserStatus,
+  getAllUsers,
+  updateUser,
   deleteUser,
 };
