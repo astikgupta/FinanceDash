@@ -76,26 +76,42 @@
                     <canvas id="trendsChart"></canvas>
                 </div>
                 <div class="recent-activity card">
-                    <h3>Recent Transactions</h3>
-                    <div class="table-responsive">
-                        <table id="recent-table">
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Category</th>
-                                    <th>Type</th>
-                                    <th>Amount</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Transactions here -->
-                            </tbody>
-                        </table>
+                        <div class="card-header">
+                            <h3>Recent Transactions</h3>
+                            <button id="toggle-filters" class="btn-secondary btn-sm">🔍 Filters</button>
+                        </div>
+                        
+                        <div id="filter-wrapper" class="filter-wrapper hidden-mobile">
+                            <div class="filter-bar">
+                                <input type="text" id="filter-search" placeholder="Search...">
+                                <select id="filter-type">
+                                    <option value="">All Types</option>
+                                    <option value="income">Income</option>
+                                    <option value="expense">Expense</option>
+                                </select>
+                                <input type="date" id="filter-start" title="Start Date">
+                                <input type="date" id="filter-end" title="End Date">
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table id="recent-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Category</th>
+                                        <th>Type</th>
+                                        <th>Amount</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Dynamic Rows -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </main>
+                </section>
+            </main>
     </div>
 
     <!-- Add Record Modal -->

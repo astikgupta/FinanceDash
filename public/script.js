@@ -27,6 +27,23 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("add-record-btn").addEventListener("click", openModal);
     document.getElementById("cancel-modal").addEventListener("click", closeModal);
     document.getElementById("record-form").addEventListener("submit", handleSubmitRecord);
+
+    // Mobile Filter Toggle
+    document.getElementById("toggle-filters").addEventListener("click", () => {
+        document.getElementById("filter-wrapper").classList.toggle("show");
+    });
+
+    // Filter Listeners (Dash Only)
+    const filters = ["filter-type", "filter-start", "filter-end"];
+    filters.forEach(id => {
+        document.getElementById(id).addEventListener("change", fetchStats);
+    });
+    
+    let searchTimeout;
+    document.getElementById("filter-search").addEventListener("input", () => {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(fetchStats, 500);
+    });
 });
 
 async function handleRegister(e) {
@@ -161,8 +178,21 @@ async function showDashboard() {
 
 async function fetchStats() {
     const token = localStorage.getItem("accessToken");
+    
+    // Collect Filters
+    const search = document.getElementById("filter-search").value;
+    const type = document.getElementById("filter-type").value;
+    const start = document.getElementById("filter-start").value;
+    const end = document.getElementById("filter-end").value;
+
+    const query = new URLSearchParams();
+    if (search) query.append("search", search);
+    if (type) query.append("type", type);
+    if (start) query.append("startDate", start);
+    if (end) query.append("endDate", end);
+
     try {
-        const response = await fetch("/api/v1/dashboard", {
+        const response = await fetch(`/api/v1/dashboard?${query.toString()}`, {
             headers: { "Authorization": `Bearer ${token}` }
         });
 
@@ -247,7 +277,7 @@ function renderChart(trends) {
         },
         options: {
             responsive: true,
-            maintainAspectRatio: false,
+            maintainAspectRatio: true,
             plugins: { legend: { labels: { color: '#94a3b8' } } },
             scales: {
                 y: { 

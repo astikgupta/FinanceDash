@@ -66,11 +66,21 @@ const getDashboardStats = async (user, query) => {
     { $sort: { "_id.year": 1, "_id.month": 1 } },
   ]);
 
-  // 4. Recent Transactions
+  // 4. Recent Transactions (with filters)
+  const { type, search } = query;
   const recTransQuery = { isDeleted: false };
   if (user.role !== "Admin") {
     recTransQuery.userId = user._id;
   }
+  
+  if (type) recTransQuery.type = type;
+  if (search) {
+    recTransQuery.$or = [
+      { category: { $regex: search, $options: "i" } },
+      { notes: { $regex: search, $options: "i" } }
+    ];
+  }
+
   const recentTransactions = await Record.find(recTransQuery)
     .sort({ date: -1 })
     .limit(10);
