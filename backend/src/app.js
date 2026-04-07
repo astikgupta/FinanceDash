@@ -20,7 +20,7 @@ app.use(express.static("public"));
 // Rate Limiting
 const limiter = rateLimit({
   windowMs: (process.env.RATE_LIMIT_WINDOW || 15) * 60 * 1000,
-  max: process.env.RATE_LIMIT_MAX || 100,
+  max: 1000, // Increased for development
   message: "Too many requests from this IP, please try again after 15 minutes",
 });
 app.use("/api", limiter);

@@ -59,8 +59,8 @@ const getRecords = async (user, query) => {
 
 const updateRecord = async (recordId, user, updateData) => {
   const query = { _id: recordId, isDeleted: false };
-  if (user.role !== "Admin") {
-    query.userId = user._id; // Non-admins can only update their own
+  if (user.role !== "Admin" && user.role !== "Analyst") {
+    query.userId = user._id; // Only viewers/others restricted to their own
   }
 
   const record = await Record.findOneAndUpdate(
@@ -78,8 +78,8 @@ const updateRecord = async (recordId, user, updateData) => {
 
 const deleteRecord = async (recordId, user) => {
   const query = { _id: recordId, isDeleted: false };
-  if (user.role !== "Admin") {
-    query.userId = user._id; // Non-admins can only delete their own
+  if (user.role !== "Admin" && user.role !== "Analyst") {
+    query.userId = user._id; // Only viewers/others restricted to their own
   }
 
   const record = await Record.findOneAndUpdate(
